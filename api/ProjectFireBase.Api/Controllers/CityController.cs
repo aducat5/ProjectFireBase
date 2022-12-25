@@ -18,19 +18,28 @@ namespace ProjectFireBase.Api.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add(string name, string state)
+        public async Task<IActionResult> Add([FromBody] AddRequest addRequest)
         {
+            var request = HttpContext.Request.Body.ToString();
+
             var firestore = new FirestoreDbBuilder
             {
                 ProjectId = "fir-denemesi-7ffbe",
                 EmulatorDetection = Google.Api.Gax.EmulatorDetection.EmulatorOrProduction
             }.Build();
 
-            if (name is null || state is null) return BadRequest();
+            if (addRequest.Name is null || addRequest.State is null) return BadRequest();
 
             var collection = firestore.Collection("cities");
-            await collection.Document(Guid.NewGuid().ToString("N")).SetAsync(new City(name, state));
+            await collection.Document(Guid.NewGuid().ToString("N")).SetAsync(new City(addRequest.Name, addRequest.State));
             return Ok();
         }
+
+        public record AddRequest
+        {
+            public string Name { get; set; }
+            public string State { get; set; }
+        }
+
     }
 }

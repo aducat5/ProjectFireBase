@@ -1,5 +1,16 @@
 var builder = WebApplication.CreateBuilder(args);
 
+//adding CORS policy for dev client
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDevClient", b =>
+    {
+        b.WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -15,6 +26,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//use the stated dev policy
+app.UseCors("AllowAngularDevClient");
 
 app.UseHttpsRedirection();
 
