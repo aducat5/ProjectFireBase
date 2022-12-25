@@ -1,29 +1,33 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+  import { ref } from 'vue'
+  const cityName = ref('')
+  const stateName = ref('')
+  const createCity = async () => {
+    const name = cityName.value
+    const state = stateName.value
+    const url = 'https://localhost:7233/city/add'
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({name, state})
+    });
+    console.log(response);
+  }
 </script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    Name
+    <input type="text" v-model="cityName" />
+    <br />
+
+    State
+    <input type="text" v-model="stateName" />
+    <br />
+    <button @click="createCity">Add</button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>
