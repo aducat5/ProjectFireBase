@@ -5,6 +5,7 @@ using ProjectFireBase.Model;
 
 namespace ProjectFireBase.Api.Controllers
 {
+    [Authorize]
     [Route("city")]
     public class CityController : ControllerBase
     {
